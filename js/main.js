@@ -35,6 +35,7 @@ $('#design').on('change', function () {
     } else if (this.value == "js puns") {
         $("#color option:not(:contains(♥))").css("display", "block");
         $("#color option:contains(♥)").css("display", "none");
+        $("#color option:contains(Please)").css("display", "none");
         $('#color').val('please');
     } else if (this.value == "heart js") {
         $("#color option:not(:contains(♥))").css("display", "none");
@@ -198,8 +199,6 @@ function isValidInput($input, regEx, val, message='') {
 function CheckActivities(){
     const $activities = $('.activities input');
 	const $errorHTML = $('<i class="warning">Please select at least one activity.</i>');
-	
-	// If there is at least 1 checked activity, returns true
 	if($activities.filter(':checked').length) {
 		$('.activities > .warning').remove();
 		return true;
