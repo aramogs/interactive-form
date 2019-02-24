@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//Ready Function:
+//Ready Function: This function prepares the begining of the page with the necesary and unnecesary info
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 $(document).ready(function () {
     $("#name").focus();
@@ -45,7 +45,7 @@ $('#design').on('change', function () {
 
 });
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//Register for activities: 
+//Register for activities: This function adds the price and checks if there is no conflicts with activities
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 const $totalHTML = $('<div class="total"><h5></h5></div>');
@@ -104,7 +104,7 @@ function toggleActivitys(valueName, value) {
 
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//Payment: Depending on the selection show or hide information
+//Payment: Depending on the selection show or hide information from colors options
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
@@ -139,7 +139,7 @@ $('#payment').on('change', function (event) {
     }
 });
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//Register Listener
+//Register Listener: Variables used to check if the inputs are correct
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////
 let  inputName =    $('#name');
 let  inputEmail =   $('#mail');
@@ -148,23 +148,23 @@ let  inputcc =      $('#cc-num');
 let  inputZip=      $('#zip');
 let  inputcvv=      $('#cvv');
 
-const RegExname = /^[a-z ,.'-]+$/i
-const RegExemail = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-const RegExcc = /^[0-9]{13,16}$/;
-const RegExzip = /^[0-9]{5}$/;
-const RegExcvv = /^[0-9]{3}$/;
+const RegExname =   /^[a-z ,.'-]+$/i
+const RegExemail =  /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+const RegExcc =     /^[0-9]{13,16}$/;
+const RegExzip =    /^[0-9]{5}$/;
+const RegExcvv =    /^[0-9]{3}$/;
 
-let inputNameVal = inputName.attr('name');
+let inputNameVal =  inputName.attr('name');
 let inputEmailVal = inputEmail.attr('name');
 let inputOtherVal = inputOther.attr('name');
-let inputccVal = inputcc.attr('name');
+let inputccVal =    inputcc.attr('name');
 let inputZipVal =   inputZip.attr('name');
 let inputcvvVal=    inputcvv.attr('name');
-let validated = true;
+let validated =     true;
 
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//Functions
+//Functions: Used to check if inputs are correct
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
@@ -196,7 +196,7 @@ function isValidInput($input, regEx, val, message='') {
 	}
 }
 
-function CheckActivities(){
+function checkActivities(){
     const $activities = $('.activities input');
 	const $errorHTML = $('<i class="warning">Please select at least one activity.</i>');
 	if($activities.filter(':checked').length) {
@@ -210,26 +210,32 @@ function CheckActivities(){
 	}
 }
 
-function CheckInputs(){
+function checkInputs(){
+    let validated =     true;
 	if($('#payment option').filter(':selected').val() === 'credit card') {
-
-        if(!isValidInput(inputName, RegExname, inputName.val(), 'name')){validated = false}        
-        if(!isValidInput(inputEmail, RegExemail, inputEmail.val(), 'email')){validated=false}
 		if(!isValidInput(inputcc, RegExcc, inputcc.val(), 'card number')){validated = false}  		
 		if(!isValidInput(inputZip, RegExzip, inputZip.val(), 'zip code')){validated = false}  
 		if(!isValidInput(inputcvv, RegExcvv, inputcvv.val(), 'CVV')){validated = false}  
     }
+    if(!isValidInput(inputName, RegExname, inputName.val(), 'name')){validated = false}        
+    if(!isValidInput(inputEmail, RegExemail, inputEmail.val(), 'email')){validated=false}
+    if(!checkActivities()){validated=false}
+
     return validated;
 }
-console.log(validated);
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//Button Listener: This button triggers the functions to check if inputs are correct
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 $('button[type="submit"]').on('click', function (event) {  
     event.preventDefault();
-    CheckActivities();
-    if(CheckInputs()){
-        console.log("listo");
+    if(checkInputs()){
+
+        //console.log("Everything its ok");
         location.reload();
     }else{
-
-        CheckInputs();
+        console.log("Validated reset if true something is missing: "+validated);
+        checkInputs();
     }
 });
